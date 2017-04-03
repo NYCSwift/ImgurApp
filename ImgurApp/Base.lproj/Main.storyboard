@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="gi1-Wb-1vj">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Images View Controller-->
+        <scene sceneID="uhz-5B-4Ds">
+            <objects>
+                <collectionViewController storyboardIdentifier="gallery" id="sKe-zJ-Dlj" customClass="ImagesViewController" customModule="ImgurApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Ksu-ba-fmn">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="FTq-np-397">
+                            <size key="itemSize" width="100" height="100"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="xCE-3N-N0m" customClass="ImageViewCell" customModule="ImgurApp" customModuleProvider="target">
+                                <rect key="frame" x="10" y="10" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cTw-Fq-X55">
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                        </imageView>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="cTw-Fq-X55" secondAttribute="trailing" id="6B2-Ct-SV5"/>
+                                    <constraint firstItem="cTw-Fq-X55" firstAttribute="leading" secondItem="xCE-3N-N0m" secondAttribute="leading" id="QT5-SM-LoV"/>
+                                    <constraint firstItem="cTw-Fq-X55" firstAttribute="top" secondItem="xCE-3N-N0m" secondAttribute="top" id="Tid-g3-JhK"/>
+                                    <constraint firstAttribute="bottom" secondItem="cTw-Fq-X55" secondAttribute="bottom" id="YPZ-i6-7Ga"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="imageView" destination="cTw-Fq-X55" id="4nW-3s-3ye"/>
+                                    <segue destination="CfR-ZA-6yZ" kind="show" id="j0J-A7-VAs"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="sKe-zJ-Dlj" id="YNn-vP-pEr"/>
+                            <outlet property="delegate" destination="sKe-zJ-Dlj" id="Udy-NF-Tfa"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" id="7A0-nv-OJb">
+                        <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="6Os-PT-XpY">
+                            <connections>
+                                <action selector="reloadData:" destination="sKe-zJ-Dlj" id="1X9-k7-pAO"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="camera" id="IB0-sv-989">
+                            <connections>
+                                <action selector="pickPhoto:" destination="sKe-zJ-Dlj" id="atL-J3-JaQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UWe-aQ-bl3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="469.60000000000002" y="91.304347826086968"/>
+        </scene>
+        <!--Title-->
+        <scene sceneID="7g3-vR-E8g">
+            <objects>
+                <viewController id="CfR-ZA-6yZ" customClass="DetailViewController" customModule="ImgurApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="G8i-CW-bN8"/>
+                        <viewControllerLayoutGuide type="bottom" id="sLp-kz-KAn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="l5X-3n-igt">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cW7-gJ-qTE">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="cW7-gJ-qTE" secondAttribute="trailing" id="9q0-nk-s8j"/>
+                            <constraint firstItem="sLp-kz-KAn" firstAttribute="top" secondItem="cW7-gJ-qTE" secondAttribute="bottom" id="fim-OD-4yP"/>
+                            <constraint firstItem="cW7-gJ-qTE" firstAttribute="leading" secondItem="l5X-3n-igt" secondAttribute="leading" id="g2b-hf-yWH"/>
+                            <constraint firstItem="cW7-gJ-qTE" firstAttribute="top" secondItem="G8i-CW-bN8" secondAttribute="bottom" id="hUp-ih-9Yr"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="eCE-Mk-joO">
+                        <barButtonItem key="rightBarButtonItem" title="Item" systemItem="trash" id="dhJ-g7-slk">
+                            <connections>
+                                <segue destination="Ycr-oV-etn" kind="unwind" identifier="deleteImage" unwindAction="deleteImage:" id="LwK-2K-PbU"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="imageView" destination="cW7-gJ-qTE" id="fK1-wW-5ax"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ouw-YC-Adp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Ycr-oV-etn" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1212" y="91"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="KX6-Rd-oOx">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="gi1-Wb-1vj" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HkR-Gb-1pa">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="sKe-zJ-Dlj" kind="relationship" relationship="rootViewController" id="BgU-p0-U9p"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UEa-mt-Vat" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-348" y="103"/>
+        </scene>
+    </scenes>
+</document>
