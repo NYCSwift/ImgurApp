@@ -95,7 +95,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="eCE-Mk-joO">
-                        <barButtonItem key="rightBarButtonItem" title="Item" systemItem="trash" id="dhJ-g7-slk">
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="dhJ-g7-slk">
                             <connections>
                                 <segue destination="Ycr-oV-etn" kind="unwind" identifier="deleteImage" unwindAction="deleteImage:" id="LwK-2K-PbU"/>
                             </connections>
