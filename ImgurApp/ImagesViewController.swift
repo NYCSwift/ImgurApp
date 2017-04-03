@@ -25,91 +25,57 @@ class ImagesViewController: UICollectionViewController, UIImagePickerControllerD
         imagePicker.sourceType = .photoLibrary
         imagePicker.delegate = self
         
-        UsingOauth2(imgurSettings, performWithToken: { (token) in
-            
-            ImgurRequestConvertible.OAuthToken = token
-            
-        }) {
-            print("Oauth2 failed")
+        ImgurAPI.login { (success, result, error) in
+            if success {
+                self.loadImages()
+            }
+            else {
+                print(error!)
+            }
         }
-        
-        reloadData(self)
     }
     
     @IBAction func pickPhoto(_ sender: Any) {
-        
         present(imagePicker, animated: true, completion: nil)
     }
     
-    @IBAction func reloadData(_ sender: Any) {
-        
-        imageArray = [ImgurImage]()
-        Alamofire.request(ImgurRequestConvertible.images()).responseJSON(completionHandler: { (response) in
-            
-            if let JSON:[String:Any] = response.result.value as? Dictionary {
-                let imgurResponse = ImgurResponse(fromJson: JSON)
-                if imgurResponse.success
-                {
-                    guard let data:[Any] = imgurResponse.data as? Array else {
-                        print("no data found")
-                        return
-                    }
-                    for img in data
-                    {
-                        self.imageArray.append(ImgurImage(json: img as! Dictionary<String, Any>))
-                    }
-                    self.collectionView?.reloadData()
-                }
-                else
-                {
-                    print("something went wrong") // handle errors
-                }
-            }
-            else
-            {
-                print("something went wrong") // handle errors
-            }
-        })
+    @IBAction func reloadImages(_ sender: Any) {
+        loadImages()
     }
     
+    func loadImages() {
+        imageArray = [ImgurImage]()
+        ImgurAPI.images { (success, result, error) in
+            if success {
+                self.imageArray = result as! [ImgurImage]
+            }
+            else {
+                print(error!)
+            }
+        }
+    }
+
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
-        self.dismiss(animated: true, completion: nil)
-        let alert = UIAlertController(title: nil, message: "Please wait while image is being uploaded...", preferredStyle: .alert)
-        present(alert, animated: true, completion: nil)
-        
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage
-        {
-            let jpegCompressionQuality: CGFloat = 0.9
-            if let base64String = UIImageJPEGRepresentation(image, jpegCompressionQuality)?.base64EncodedString() {
-                Alamofire.request(
-                    ImgurRequestConvertible.postImage(
-                        parameters: ["image":base64String,"type":"base64"])).responseJSON(completionHandler: { (response) in
-                            
-                            if let JSON:[String:Any] = response.result.value as? Dictionary {
-
-                                let imgurResponse = ImgurResponse(fromJson: JSON)
-                                if imgurResponse.success
-                                {
-                                    guard let data:[String:Any] = imgurResponse.data as? Dictionary else {
-                                        print("no data found")
-                                        return
-                                    }
-                                    self.imageArray.append(ImgurImage(json: data ))
-                                    self.collectionView?.reloadData()
-                                }
-                                else
-                                {
-                                    print("something went wrong") // handle errors
-                                }
-                            }
-                            else
-                            {
-                                print("something went wrong") // handle errors
-                            }
-                            self.dismiss(animated: true, completion: nil)
-
-                        })
+        self.dismiss(animated: true) {
+            
+            let alert = UIAlertController(title: nil, message: "Uploading Image. Please wait ...", preferredStyle: .alert)
+            self.present(alert, animated: true) {
+                
+                if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+                    
+                    ImgurAPI.upload(image: image, completion: { (success, result, error) in
+                        
+                        if success {
+                            self.imageArray.append(result as! ImgurImage)
+                            self.collectionView?.reloadData()
+                        }
+                        else {
+                            print(error!)
+                        }
+                        self.dismiss(animated: true, completion: nil)
+                    })
+                }
             }
         }
     }

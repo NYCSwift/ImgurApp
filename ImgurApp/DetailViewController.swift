@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import AlamofireOauth2
-import Alamofire
 
 class DetailViewController: UIViewController {
 
@@ -41,25 +39,14 @@ class DetailViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let controller = segue.destination as! ImagesViewController
-        Alamofire.request(ImgurRequestConvertible.deleteImage(imageId: imgurImage.id)).responseJSON(completionHandler: { (response) in
-            
-            if let JSON:[String:Any] = response.result.value as? Dictionary {
-
-                let imgurResponse = ImgurResponse(fromJson: JSON)
-                if imgurResponse.success
-                {
-                    controller.imageArray.remove(at: self.indexPath.row)
-                    controller.collectionView?.reloadData()
-                }
-                else
-                {
-                    print("something went wrong") // handle errors
-                }
+        ImgurAPI.deleteImage(id: imgurImage.id) { (success, result, error) in
+            if success  {
+                controller.imageArray.remove(at: self.indexPath.row)
+                controller.collectionView?.reloadData()
             }
-            else
-            {
-                print("something went wrong") // handle errors
+            else {
+                print(error!)
             }
-        })
+        }
     }
 }

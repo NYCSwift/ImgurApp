@@ -13,7 +13,7 @@
         <scene sceneID="uhz-5B-4Ds">
             <objects>
                 <collectionViewController storyboardIdentifier="gallery" id="sKe-zJ-Dlj" customClass="ImagesViewController" customModule="ImgurApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="Ksu-ba-fmn">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Ksu-ba-fmn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -56,7 +56,7 @@
                     <navigationItem key="navigationItem" title="ImgurApp" id="7A0-nv-OJb">
                         <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="6Os-PT-XpY">
                             <connections>
-                                <action selector="reloadData:" destination="sKe-zJ-Dlj" id="1X9-k7-pAO"/>
+                                <action selector="reloadImages:" destination="sKe-zJ-Dlj" id="fO9-0e-gZY"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="camera" id="IB0-sv-989">

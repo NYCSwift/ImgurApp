@@ -13,7 +13,7 @@ import Alamofire
 //  Client ID           Client Secret
 //  ebda7db396bc4a0     9e4d324e47e5933b43d9c9dccc35c49d4009c269
 
-let imgurSettings = Oauth2Settings(
+private let imgurSettings = Oauth2Settings(
     baseURL: "https://api.imgur.com/3/",
     authorizeURL: "https://api.imgur.com/oauth2/authorize",
     tokenURL: "https://api.imgur.com/oauth2/token",
@@ -22,7 +22,7 @@ let imgurSettings = Oauth2Settings(
     clientSecret: "9e4d324e47e5933b43d9c9dccc35c49d4009c269"
 )
 
-public enum ImgurRequestConvertible: URLRequestConvertible {
+private enum ImgurRequestConvertible: URLRequestConvertible {
     
     //    GET
     //    https://api.imgur.com/3/account/me
@@ -98,6 +98,102 @@ public enum ImgurRequestConvertible: URLRequestConvertible {
     }
 }
 
+class ImgurAPI {
+    
+    class func login(completion: @escaping (_ success:Bool, _ result: Any?, _ error:String?) -> Void) {
+        
+        UsingOauth2(imgurSettings, performWithToken: { (token) in
+            ImgurRequestConvertible.OAuthToken = token
+            completion(true, nil, nil)
+        }) {
+            completion(false, nil, "Login failed")
+        }
+    }
+    
+    class func images(completion: @escaping (_ success:Bool, _ result: Any?, _ error:String?) -> Void) {
+        Alamofire.request(ImgurRequestConvertible.images()).responseJSON(completionHandler: { (response) in
+            
+            var imageArray = [ImgurImage]()
+            
+            if let JSON:[String:Any] = response.result.value as? Dictionary {
+                let imgurResponse = ImgurResponse(fromJson: JSON)
+                if imgurResponse.success
+                {
+                    guard let data:[Any] = imgurResponse.data as? Array else {
+                        print("no data found")
+                        return
+                    }
+                    for img in data
+                    {
+                        imageArray.append(ImgurImage(json: img as! Dictionary<String, Any>))
+                    }
+                    
+                    completion(true, imageArray, nil)
+                    
+                }
+                else
+                {
+                    completion(false, nil, "something went wrong")
+                }
+            }
+            else
+            {
+                completion(false, nil, "something went wrong")
+            }
+        })
+    }
+    
+    class func upload(image:UIImage, completion: @escaping (_ success:Bool, _ result: Any?, _ error:String?) -> Void) {
+        let jpegCompressionQuality: CGFloat = 0.9
+        if let base64String = UIImageJPEGRepresentation(image, jpegCompressionQuality)?.base64EncodedString() {
+            Alamofire.request(
+                ImgurRequestConvertible.postImage(
+                    parameters: ["image":base64String,"type":"base64"])).responseJSON(completionHandler: { (response) in
+                        
+                        if let JSON:[String:Any] = response.result.value as? Dictionary {
+                            
+                            let imgurResponse = ImgurResponse(fromJson: JSON)
+                            if imgurResponse.success
+                            {
+                                guard let data:[String:Any] = imgurResponse.data as? Dictionary else {
+                                    print("no data found")
+                                    return
+                                }
+                                completion(true, ImgurImage(json: data ), nil)
+                                
+                            }
+                            else
+                            {
+                                completion(false, nil, "something went wrong")
+                            }
+                        }
+                        else
+                        {
+                            completion(false, nil, "something went wrong")
+                        }
+                        
+                    })
+        }
+        
+    }
+    
+    class func deleteImage (id:String, completion: @escaping (_ success:Bool, _ result: Any?, _ error:String?) -> Void)
+    {
+        
+        Alamofire.request(ImgurRequestConvertible.deleteImage(imageId: id)).responseJSON(completionHandler: { (response) in
+            
+            if let JSON:[String:Any] = response.result.value as? Dictionary {
+                
+                let imgurResponse = ImgurResponse(fromJson: JSON)
+                completion(imgurResponse.success, nil, nil)
+            }
+            else
+            {
+                completion(false, nil, "something went wrong")
+            }
+        })
+    }
+}
 class ImgurImage {
     var id:String
     var link:String
