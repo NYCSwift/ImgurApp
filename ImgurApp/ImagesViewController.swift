@@ -97,7 +97,6 @@ class ImagesViewController: UICollectionViewController, UIImagePickerControllerD
                                     }
                                     self.imageArray.append(ImgurImage(json: data ))
                                     self.collectionView?.reloadData()
-                                    self.dismiss(animated: true, completion: nil)
                                 }
                                 else
                                 {
@@ -108,6 +107,8 @@ class ImagesViewController: UICollectionViewController, UIImagePickerControllerD
                             {
                                 print("something went wrong") // handle errors
                             }
+                            self.dismiss(animated: true, completion: nil)
+
                         })
             }
         }
