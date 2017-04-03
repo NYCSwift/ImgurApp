@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Images View Controller-->
+        <!--ImgurApp-->
         <scene sceneID="uhz-5B-4Ds">
             <objects>
                 <collectionViewController storyboardIdentifier="gallery" id="sKe-zJ-Dlj" customClass="ImagesViewController" customModule="ImgurApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -53,7 +53,7 @@
                             <outlet property="delegate" destination="sKe-zJ-Dlj" id="Udy-NF-Tfa"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="7A0-nv-OJb">
+                    <navigationItem key="navigationItem" title="ImgurApp" id="7A0-nv-OJb">
                         <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="6Os-PT-XpY">
                             <connections>
                                 <action selector="reloadData:" destination="sKe-zJ-Dlj" id="1X9-k7-pAO"/>
@@ -70,7 +70,7 @@
             </objects>
             <point key="canvasLocation" x="469.60000000000002" y="91.304347826086968"/>
         </scene>
-        <!--Title-->
+        <!--Detail View Controller-->
         <scene sceneID="7g3-vR-E8g">
             <objects>
                 <viewController id="CfR-ZA-6yZ" customClass="DetailViewController" customModule="ImgurApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -94,7 +94,7 @@
                             <constraint firstItem="cW7-gJ-qTE" firstAttribute="top" secondItem="G8i-CW-bN8" secondAttribute="bottom" id="hUp-ih-9Yr"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="eCE-Mk-joO">
+                    <navigationItem key="navigationItem" id="eCE-Mk-joO">
                         <barButtonItem key="rightBarButtonItem" systemItem="trash" id="dhJ-g7-slk">
                             <connections>
                                 <segue destination="Ycr-oV-etn" kind="unwind" identifier="deleteImage" unwindAction="deleteImage:" id="LwK-2K-PbU"/>
