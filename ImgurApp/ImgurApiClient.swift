@@ -13,6 +13,7 @@ import Alamofire
 //  Client ID           Client Secret
 //  ebda7db396bc4a0     9e4d324e47e5933b43d9c9dccc35c49d4009c269
 
+// oauth setting
 private let imgurSettings = Oauth2Settings(
     baseURL: "https://api.imgur.com/3/",
     authorizeURL: "https://api.imgur.com/oauth2/authorize",
@@ -57,6 +58,7 @@ private enum ImgurRequestConvertible: URLRequestConvertible {
             return .delete
         }
     }
+    
     var path: String {
         switch self {
         case .me:
@@ -98,10 +100,14 @@ private enum ImgurRequestConvertible: URLRequestConvertible {
     }
 }
 
+// all API calls as class methods, each method has a completion handler which return success status, result and error 
+// result and error are optional
+// result can be Any type 
+// error currently just a string but should handle more than a string (refactoring needed)
 class ImgurAPI {
     
+    // login API
     class func login(completion: @escaping (_ success:Bool, _ result: Any?, _ error:String?) -> Void) {
-        
         UsingOauth2(imgurSettings, performWithToken: { (token) in
             ImgurRequestConvertible.OAuthToken = token
             completion(true, nil, nil)
@@ -110,6 +116,7 @@ class ImgurAPI {
         }
     }
     
+    // images API, get all images for the logged in user
     class func images(completion: @escaping (_ success:Bool, _ result: Any?, _ error:String?) -> Void) {
         Alamofire.request(ImgurRequestConvertible.images()).responseJSON(completionHandler: { (response) in
             
@@ -143,6 +150,7 @@ class ImgurAPI {
         })
     }
     
+    // uplaod API , upload an image as base64
     class func upload(image:UIImage, completion: @escaping (_ success:Bool, _ result: Any?, _ error:String?) -> Void) {
         let jpegCompressionQuality: CGFloat = 0.9
         if let base64String = UIImageJPEGRepresentation(image, jpegCompressionQuality)?.base64EncodedString() {
@@ -151,35 +159,27 @@ class ImgurAPI {
                     parameters: ["image":base64String,"type":"base64"])).responseJSON(completionHandler: { (response) in
                         
                         if let JSON:[String:Any] = response.result.value as? Dictionary {
-                            
                             let imgurResponse = ImgurResponse(fromJson: JSON)
-                            if imgurResponse.success
-                            {
+                            if imgurResponse.success {
                                 guard let data:[String:Any] = imgurResponse.data as? Dictionary else {
                                     print("no data found")
                                     return
                                 }
                                 completion(true, ImgurImage(json: data ), nil)
-                                
                             }
-                            else
-                            {
+                            else {
                                 completion(false, nil, "something went wrong")
                             }
                         }
-                        else
-                        {
+                        else {
                             completion(false, nil, "something went wrong")
                         }
-                        
                     })
         }
-        
     }
     
-    class func deleteImage (id:String, completion: @escaping (_ success:Bool, _ result: Any?, _ error:String?) -> Void)
-    {
-        
+    // delete API, delete and image by id
+    class func deleteImage (id:String, completion: @escaping (_ success:Bool, _ result: Any?, _ error:String?) -> Void) {
         Alamofire.request(ImgurRequestConvertible.deleteImage(imageId: id)).responseJSON(completionHandler: { (response) in
             
             if let JSON:[String:Any] = response.result.value as? Dictionary {
@@ -187,13 +187,14 @@ class ImgurAPI {
                 let imgurResponse = ImgurResponse(fromJson: JSON)
                 completion(imgurResponse.success, nil, nil)
             }
-            else
-            {
+            else  {
                 completion(false, nil, "something went wrong")
             }
         })
     }
 }
+
+// represents an imgur image object, currently only id and link being parsed
 class ImgurImage {
     var id:String
     var link:String
@@ -206,6 +207,8 @@ class ImgurImage {
     }
 }
 
+// represents imgur response
+// data can be an array, dictiorny etc. depends what the imgur API returns
 class ImgurResponse {
     var data:Any
     var status:Int
