@@ -1,0 +1,22 @@
+PODS:
+  - Alamofire (4.5.0)
+  - AlamofireImage (3.2.0):
+    - Alamofire (~> 4.1)
+  - AlamofireOauth2 (2.0.1):
+    - Alamofire
+    - KeychainAccess
+  - KeychainAccess (3.0.2)
+
+DEPENDENCIES:
+  - AlamofireImage
+  - AlamofireOauth2
+
+SPEC CHECKSUMS:
+  Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
+  AlamofireImage: 157ed682cc81d3b9db4fb90c1f12180ac552d93b
+  AlamofireOauth2: f3f58d52bdac4c0340181d32ae7d9eaa4c5ed84b
+  KeychainAccess: a986406022dfc7c634c691ad3bec670cc6a32002
+
+PODFILE CHECKSUM: c94998fdaf390f2f7768b36fb72d29b67409753b
+
+COCOAPODS: 1.2.0

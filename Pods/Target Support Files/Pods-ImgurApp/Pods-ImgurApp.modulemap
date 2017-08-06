@@ -1,0 +1,6 @@
+framework module Pods_ImgurApp {
+  umbrella header "Pods-ImgurApp-umbrella.h"
+
+  export *
+  module * { export * }
+}

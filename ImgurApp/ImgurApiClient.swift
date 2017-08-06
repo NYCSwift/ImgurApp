@@ -10,17 +10,14 @@ import Foundation
 import AlamofireOauth2
 import Alamofire
 
-//  Client ID           Client Secret
-//  ebda7db396bc4a0     9e4d324e47e5933b43d9c9dccc35c49d4009c269
-
 // oauth setting
 private let imgurSettings = Oauth2Settings(
     baseURL: "https://api.imgur.com/3/",
     authorizeURL: "https://api.imgur.com/oauth2/authorize",
     tokenURL: "https://api.imgur.com/oauth2/token",
     redirectURL: "https://imgur.com",
-    clientID: "ebda7db396bc4a0",
-    clientSecret: "9e4d324e47e5933b43d9c9dccc35c49d4009c269"
+    clientID: "######### YOUR CLIENT ID HERE #########",
+    clientSecret: "######### YOUR CLIENT SECRET HERE #########"
 )
 
 private enum ImgurRequestConvertible: URLRequestConvertible {
